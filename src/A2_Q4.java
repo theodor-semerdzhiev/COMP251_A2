@@ -2,7 +2,7 @@ import java.util.*;
 
 public class A2_Q4 {
 
-    //First approach ()
+    //First approach (misunderstood problem)
     public static double swaps(int[] passengers) {
 
         double res=0;
