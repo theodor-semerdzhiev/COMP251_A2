@@ -26,8 +26,8 @@ public class A2_Q2 {
                 cur_denomination--;
                 continue;
             }
-            sum-=denominations[cur_denomination];
-            res++;
+            res+= sum / denominations[cur_denomination];
+            sum %= denominations[cur_denomination];
         }
         return res;
     }
@@ -59,9 +59,9 @@ public class A2_Q2 {
                 {1, 3, 9, 27, 81, 243, 729, 2187, 6561, 19683, 59049, 177147, 531441},
                 {1, 7, 13, 19, 37}};
         for(int i=0 ; i < arr.length; i++)
-            System.out.println(change(arr[i]));
+           System.out.println(change(arr[i]));
 
-
+        System.out.println(greedy(arr[0],100));
         //System.out.println(dynamic_programming(arr[0],9));
 
     }
