@@ -2,13 +2,20 @@ import javax.print.attribute.HashPrintJobAttributeSet;
 import java.util.HashMap;
 
 public class A2_Q2 {
+    static HashMap<Integer,Integer> map;
     public static int change(int[] denominations) {
-
-
-
-
-        return -1;
-
+        map = new HashMap<Integer,Integer>();
+        int res=Integer.MAX_VALUE;
+        dynamic_programming(denominations,denominations[denominations.length-1]+denominations[denominations.length-2]);
+        for(int i=1; i <= denominations[denominations.length-1]+denominations[denominations.length-2]; i++) {
+            int greedy_result=greedy(denominations,i);
+            //System.out.println("Greedy i= "+i+" greedy_result = "+greedy_result);
+            if(greedy_result != map.get(i)) {
+                res = Math.min(res,i);
+            }
+        }
+        if(res== Integer.MAX_VALUE) return -1;
+        return res;
     }
 
     private static int greedy(int[] denominations, int sum) {
@@ -16,6 +23,7 @@ public class A2_Q2 {
         int cur_denomination=denominations.length-1;
         int res=0;
         while(sum > 0) {
+            if(cur_denomination == -1) return -1;
             if(sum < denominations[cur_denomination]) {
                 cur_denomination--;
                 continue;
@@ -25,39 +33,40 @@ public class A2_Q2 {
         }
         return res;
     }
-
-    public static void main(String args[]) {
-        int[] arr1={1,2,4,8};
-        int[] arr2={1,5,8};
-        int[] arr3={1,5,10,25,100,200};
-        int[] arr4={1, 5, 6, 9};
-        System.out.println(greedy(arr4,1100));
-        System.out.println(dynamic_programming(arr4,1100));
-//        int j=0;
-//        for(int i=0 ; i< 1000000; i++) {
-//            try{
-//                System.out.println(dynamic_programming(arr4,j)+" with j="+j);
-//            } catch (Exception e) {
-//                System.out.println("Failed at j="+j);
-//            }
-//            j+=100000;
-//        }
-    }
-
     private static int dynamic_programming(int[] denominations, int sum) {
-        HashMap<Integer,Integer> map = new HashMap<Integer,Integer>();
-        return dyn_prog_helper(denominations,0,sum,0,map);
+        int res = dyn_prog_helper_1(denominations,sum);
+        return res;
     }
 
-    private static int dyn_prog_helper(int [] denominations, int cur_sum, int sum, int num_of_change, HashMap<Integer,Integer> map) {
-        if (sum == cur_sum) return num_of_change;
-        if (sum < cur_sum) return Integer.MAX_VALUE-1;
-        if(map.containsKey(cur_sum)) return map.get(cur_sum);
-        int res=Integer.MAX_VALUE-1;
-        for (int i = denominations.length - 1; i >= 0; i--) {
-            res=Math.min(res, dyn_prog_helper(denominations,cur_sum+denominations[i], sum, num_of_change+1, map));
+    //FINAL SOLUTION THAT WORKS
+    private static int dyn_prog_helper_1(int [] denominations, int sum) {
+        int [] arr = new int[sum+1];
+        for(int i=0; i < arr.length; i++) arr[i]=sum+1;
+        arr[0]=0;
+        for(int i=1; i <= sum;i++) {
+            for(Integer denomination: denominations) {
+                if(i-denomination >= 0) {
+                    arr[i] = Math.min(arr[i], 1+arr[i-denomination]);
+                    map.put(i,Math.min(arr[i], 1+arr[i-denomination]));
+                }
+            }
         }
-        map.put(cur_sum, res);
-        return res;
+        if(arr[sum] != sum+1) return arr[sum];
+        return -1;
+    }
+    ///for testing
+    public static void main(String args[]) {
+        int[][] arr={{1,2,4,5},
+                {1,2,4,5,8},
+                {1,13},
+                {1, 9999},
+                {1,10,13},
+                {1, 3, 9, 27, 81, 243, 729, 2187, 6561, 19683, 59049, 177147, 531441},
+                {1, 7, 13, 19, 37}};
+        for(int i=0 ; i < arr.length; i++) System.out.println(change(arr[i]));
+
+
+        //System.out.println(dynamic_programming(arr[0],9));
+
     }
 }
