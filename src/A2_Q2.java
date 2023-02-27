@@ -6,10 +6,7 @@ public class A2_Q2 {
     static int [] arr;
 
     public static int change(int[] denominations) {
-        if(denominations.length >= 2)
-            arr = new int[denominations[denominations.length-1]+denominations[denominations.length-2]+1];
-        else
-            arr=new int[denominations[denominations.length-1]+1];
+        arr = new int[denominations[denominations.length-1]+denominations[denominations.length-2]+1];
         dynamic_programming(denominations,denominations[denominations.length-1]+denominations[denominations.length-2]);
         for(int i=1; i <= denominations[denominations.length-1]+denominations[denominations.length-2]; i++) {
             //System.out.println("Greedy i= "+i+" greedy_result = "+greedy_result);
