@@ -58,8 +58,11 @@ public class A2_Q1 {
 //            System.out.println(find_largest_score(arr3));
 //        }
         //printBoard(arr4);
-
-        System.out.println(game_recursion(arr_test2));
+        printBoard(arr_test13);
+        System.out.println(game_recursion(arr_test13));
+        printBoard(arr_test13);
+        System.out.println(arr.toString());
+        System.out.println(arr.size());
 
     }
     static ArrayList<Integer> arr;
@@ -225,8 +228,10 @@ public class A2_Q1 {
                 }
             }
         }
-        if(!isGameEnded) return score_p1-score_p2;
-        arr.add(res);
+        if(!isGameEnded){
+            arr.add(Math.abs(score_p1-score_p2));
+            return Math.abs(score_p1-score_p2);
+        }
         return res;
     }
 
