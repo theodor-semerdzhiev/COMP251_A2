@@ -26,7 +26,7 @@ public class A2_Q2 {
                 cur_denomination--;
                 continue;
             }
-            res+= sum / denominations[cur_denomination];
+            res+= Math.floorDiv(sum ,denominations[cur_denomination]);
             sum %= denominations[cur_denomination];
         }
         return res;
@@ -47,6 +47,18 @@ public class A2_Q2 {
             }
         }
         if(arr[sum] != 0) return arr[sum];
+        return -1;
+    }
+    private static int dyn_prog_helper_2(int [] denominations, int sum) {
+        for(int i=0; i < arr.length; i++) arr[i]=sum+1;
+        arr[0]=0;
+        for(int i=1; i <= sum;i++)
+            for(int j=0; j < denominations.length; j++) {
+                if(i-denominations[j] >= 0) {
+                    arr[i] = Math.min(arr[i], 1+arr[i-denominations[j]]);
+                }
+            }
+        if(arr[sum] != sum+1) return arr[sum];
         return -1;
     }
     ///for testing
