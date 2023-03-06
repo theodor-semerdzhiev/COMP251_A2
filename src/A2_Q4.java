@@ -22,7 +22,7 @@ public class A2_Q4 {
         int right_pointer = mid;
         int num = 0;
         double res = 0;
-        int аrr[] = new int[right - left + 1];
+        int[] аrr = new int[right - left + 1];
         while (left_pointer < mid && right_pointer < right+1) {
             if (passengers[left_pointer] <= passengers[right_pointer]) {
                 аrr[num] = passengers[left_pointer];

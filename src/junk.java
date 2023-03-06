@@ -98,4 +98,168 @@ public class junk {
             }
         }
     }
+    //this function is badly written refer to solution_2()
+    public static int solution_1(int[][] board,int turn, int score_p1, int score_p2) {
+        boolean isGameEnded=false;
+        int res=Integer.MIN_VALUE;
+        if(turn % 2 == 0) {
+            for(int i=0; i< board.length; i++) {
+                for(int j=0; j <= i; j++) {
+                    if(board[i][j] == 0) {
+                        //TODO
+                        int val1=0;
+                        int val2=0;
+                        int val3=0;
+                        if(i-2 >=0 && board[i-2][j] != 0 && board[i-2][j] != -1 && board[i-1][j] != 0) {
+
+                            val1=board[i-2][j];
+                            val2=board[i-1][j];
+                            val3=board[i][j];
+
+                            board[i-2][j]=0;
+                            board[i-1][j]=0;
+                            board[i][j]=val1;
+
+                            res=Math.max(res,solution_1(board,turn+1, score_p1+(val1*val2), score_p2));
+
+                            board[i-2][j]=val1;
+                            board[i-1][j]=val2;
+                            board[i][j]=val3;
+                            isGameEnded=true;
+                        }
+                        if(i+2 < board.length && board[i+2][j] != 0 && board[i+2][j] != -1 && board[i+1][j] != 0) {
+                            val1=board[i][j];
+                            val2=board[i+1][j];
+                            val3=board[i+2][j];
+
+                            board[i+2][j]=0;
+                            board[i+1][j]=0;
+                            board[i][j]=val3;
+
+                            res=Math.max(res,solution_1(board,turn+1, score_p1+(val3*val2), score_p2));
+
+                            board[i][j]=val1;
+                            board[i+1][j]=val2;
+                            board[i+2][j]=val3;
+                            isGameEnded=true;
+                        }
+                        if(j-2 >= 0 && board[i][j-2] != 0 && board[i][j-2] != -1 && board[i][j-1] != 0) {
+                            val1=board[i][j];
+                            val2=board[i][j-1];
+                            val3=board[i][j-2];
+
+                            board[i][j-2]=0;
+                            board[i][j-1]=0;
+                            board[i][j]=val3;
+
+                            res=Math.max(res,solution_1(board,turn+1, score_p1+(val3*val2), score_p2));
+
+                            board[i][j]=val1;
+                            board[i][j-1]=val2;
+                            board[i][j-2]=val3;
+                            isGameEnded=true;
+                        }
+                        if(j+2 < board[i].length && board[i][j+2] != 0 && board[i][j+2] != -1 && board[i][j+1] != 0) {
+                            val1=board[i][j];
+                            val2=board[i][j+1];
+                            val3=board[i][j+2];
+
+                            board[i][j+2]=0;
+                            board[i][j+1]=0;
+                            board[i][j]=val3;
+
+                            res=Math.max(res,solution_1(board,turn+1, score_p1+(val3*val2), score_p2));
+
+                            board[i][j]=val1;
+                            board[i][j+1]=val2;
+                            board[i][j+2]=val3;
+                            isGameEnded=true;
+                        }
+                    }
+                }
+            }
+
+        } else {
+            for(int i=0; i <board.length; i++) {
+                for(int j=0; j < i; j++) {
+                    if(board[i][j] == 0) {
+                        //TODO
+                        int val1 = 0;
+                        int val2 = 0;
+                        int val3 = 0;
+                        if (i - 2 >= 0 && board[i - 2][j] != 0 && board[i - 2][j] != -1 && board[i-1][j] != 0) {
+
+                            val1 = board[i - 2][j];
+                            val2 = board[i - 1][j];
+                            val3 = board[i][j];
+
+                            board[i - 2][j] = 0;
+                            board[i - 1][j] = 0;
+                            board[i][j] = val1;
+
+                            res=Math.max(res,solution_1(board, turn + 1, score_p1, score_p2 + (val1 * val2)));
+
+                            board[i - 2][j] = val1;
+                            board[i - 1][j] = val2;
+                            board[i][j] = val3;
+                            isGameEnded = true;
+                        }
+                        if (i + 2 < board.length && board[i + 2][j] != 0 && board[i + 2][j] != -1 && board[i+1][j] != 0) {
+                            val1 = board[i][j];
+                            val2 = board[i + 1][j];
+                            val3 = board[i + 2][j];
+
+                            board[i + 2][j] = 0;
+                            board[i + 1][j] = 0;
+                            board[i][j] = val3;
+
+                            res=Math.max(res,solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
+
+                            board[i][j] = val1;
+                            board[i + 1][j] = val2;
+                            board[i + 2][j] = val3;
+                            isGameEnded = true;
+                        }
+                        if (j - 2 >= 0 && board[i][j - 2] != 0 && board[i][j - 2] != -1 && board[i][j-1] != 0) {
+                            val1 = board[i][j];
+                            val2 = board[i][j - 1];
+                            val3 = board[i][j - 2];
+
+                            board[i][j - 2] = 0;
+                            board[i][j - 1] = 0;
+                            board[i][j] = val3;
+
+                            res=Math.max(res,solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
+
+                            board[i][j] = val1;
+                            board[i][j - 1] = val2;
+                            board[i][j - 2] = val3;
+                            isGameEnded = true;
+                        }
+                        if (j + 2 < board[i].length && board[i][j + 2] != 0 && board[i][j + 2] != -1 && board[i][j+1] != 0) {
+                            val1 = board[i][j];
+                            val2 = board[i][j + 1];
+                            val3 = board[i][j + 2];
+
+                            board[i][j + 2] = 0;
+                            board[i][j + 1] = 0;
+                            board[i][j] = val3;
+
+                            res=Math.max(res,solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
+
+                            board[i][j] = val1;
+                            board[i][j + 1] = val2;
+                            board[i][j + 2] = val3;
+                            isGameEnded = true;
+                        }
+                    }
+                }
+            }
+        }
+        if(!isGameEnded){
+            return score_p1-score_p2;
+        }
+        return res;
+    }
+
 }
