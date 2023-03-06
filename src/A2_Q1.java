@@ -32,16 +32,16 @@ public class A2_Q1 {
                 {1, 1, 1, 1, 1}};
 
         int[][] arr_test2 = {{1, -1, -1, -1, -1},
-                {1, 1 - 1, -1, -1},
-                {1, 1, 1, -1, -1},
-                {1, 1, 1, 1, -1},
-                {1, 1, 0, 100, 1}};
+                            {1, 1, -1, -1, -1},
+                            {1, 1, 1, -1, -1},
+                            {1, 1, 1, 1, -1},
+                            {1, 1, 0, 100, 1}};
 
         int[][] arr_test13 = {{55, -1, -1, -1, -1},
-                {99, 24, -1, -1, -1},
-                {77, 93, 19, -1, -1},
-                {27, 26, 5, 53, -1},
-                {9, 90, 48, 44, 0}};
+                            {99, 24, -1, -1, -1},
+                            {77, 93, 19, -1, -1},
+                            {27, 26, 5, 53, -1},
+                            {9, 90, 48, 44, 0}};
 
         int[][] arr4 = {{55, -1, -1, -1, -1},
                 {99, 24, -1, -1, -1},
@@ -59,6 +59,9 @@ public class A2_Q1 {
                 {12, 0, -1, -1},
                 {3, 1, 1, -1},
                 {2, 1, 1, 1}};
+        int[][] test_arr1 = {{0,-1,-1},
+                            {1,2,-1},
+                            {3,4,5}};
 
 
 //        while(true) {
@@ -67,15 +70,15 @@ public class A2_Q1 {
 //        }
         //printBoard(arr4);
         //printBoard(arr_test13);
-        System.out.println(game_recursion(arr_test13));
+        System.out.println(game_recursion(arr_test18));
         //printBoard(arr_test13);
         //System.out.println(arr.toString());
-        System.out.println(arr.contains(3381));
+        System.out.println(arr1.contains(3381));
         System.out.println(num);
 
     }
 
-    static ArrayList<Integer> arr = new ArrayList<>();
+    static ArrayList<Integer> arr1 = new ArrayList<>();
     static int num = 0;
 
     public static int game_recursion(int[][] board) {
@@ -85,6 +88,8 @@ public class A2_Q1 {
     //DOES NOT WORK (maybe it does)
     public static int solution_1(int[][] board, int turn, int score_p1, int score_p2) {
         //printBoard(board);
+        ArrayList<Integer> arr = new ArrayList<>();
+
         int res;
         if (turn % 2 == 1) {
             res = Integer.MAX_VALUE;
@@ -93,176 +98,215 @@ public class A2_Q1 {
         }
         boolean isGameEnded = true;
         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j <= i; j++) {
+            for (int j = i; j >= 0; j--) {
                 if (board[i][j] == 0) {
-                    int val1 = 0;
-                    int val2 = 0;
-                    int val3 = 0;
-                    if (i - 2 >= 0 && board[i - 2][j] != 0 && board[i - 2][j] != -1 && board[i - 1][j] != 0 && board[i - 1][j] != -1) {
-                        val1 = board[i][j];
-                        val2 = board[i - 1][j];
-                        val3 = board[i - 2][j];
+                    int hole = 0;
+                    int jump_over = 0;
+                    int selected_val = 0;
+                    if (i - 2 >= 0 &&
+                        board[i - 2][j] != 0 &&
+                        board[i - 2][j] != -1 &&
+                        board[i - 1][j] != 0 &&
+                        board[i - 1][j] != -1) {
+
+                        hole = board[i][j];
+                        jump_over = board[i - 1][j];
+                        selected_val = board[i - 2][j];
 
                         board[i - 2][j] = 0;
                         board[i - 1][j] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val2 * val3), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val2 * val3)));
 
-                        board[i][j] = val1;
-                        board[i - 1][j] = val2;
-                        board[i - 2][j] = val3;
+                        if(turn % 2 == 0)   arr.add(solution_1(board, turn + 1, score_p1 + (jump_over * selected_val), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
+                        board[i][j] = hole;
+                        board[i - 1][j] = jump_over;
+                        board[i - 2][j] = selected_val;
                         isGameEnded = false;
                     }
-                    if (i + 2 < board.length && board[i + 2][j] != 0 && board[i + 2][j] != -1 && board[i + 1][j] != 0 && board[i + 1][j] != -1) {
-                        val1 = board[i][j];
-                        val2 = board[i + 1][j];
-                        val3 = board[i + 2][j];
+                    if (i + 2 < board.length
+                        && board[i + 2][j] != 0
+                        && board[i + 2][j] != -1
+                        && board[i + 1][j] != 0
+                        && board[i + 1][j] != -1) {
+
+                        hole = board[i][j];
+                        jump_over = board[i + 1][j];
+                        selected_val = board[i + 2][j];
 
                         board[i + 2][j] = 0;
                         board[i + 1][j] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val3 * val2), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
 
-                        board[i][j] = val1;
-                        board[i + 1][j] = val2;
-                        board[i + 2][j] = val3;
+                        if (turn % 2 == 0)  arr.add(solution_1(board, turn + 1, score_p1 + (selected_val * jump_over), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
+
+                        board[i][j] = hole;
+                        board[i + 1][j] = jump_over;
+                        board[i + 2][j] = selected_val;
                         isGameEnded = false;
                     }
-                    if (j - 2 >= 0 && board[i][j - 2] != 0 && board[i][j - 2] != -1 && board[i][j - 1] != 0 && board[i][j - 1] != -1) {
-                        val1 = board[i][j];
-                        val2 = board[i][j - 1];
-                        val3 = board[i][j - 2];
+                    if (j - 2 >= 0 &&
+                        board[i][j - 2] != 0 &&
+                        board[i][j - 2] != -1 &&
+                        board[i][j - 1] != 0 &&
+                        board[i][j - 1] != -1) {
+
+                        hole = board[i][j];
+                        jump_over = board[i][j - 1];
+                        selected_val = board[i][j - 2];
 
                         board[i][j - 2] = 0;
                         board[i][j - 1] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val3 * val2), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
+                        if (turn % 2 == 0)  arr.add(solution_1(board, turn + 1, score_p1 + (selected_val * jump_over), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
 
-                        board[i][j] = val1;
-                        board[i][j - 1] = val2;
-                        board[i][j - 2] = val3;
+
+                        board[i][j] = hole;
+                        board[i][j - 1] = jump_over;
+                        board[i][j - 2] = selected_val;
                         isGameEnded = false;
                     }
-                    if (j + 2 < board[i].length && board[i][j + 2] != 0 && board[i][j + 2] != -1 && board[i][j + 1] != 0 && board[i][j + 1] != -1) {
-                        val1 = board[i][j];
-                        val2 = board[i][j + 1];
-                        val3 = board[i][j + 2];
+                    if (j + 2 < board[i].length &&
+                        board[i][j + 2] != 0 &&
+                        board[i][j + 2] != -1 &&
+                        board[i][j + 1] != 0 &&
+                        board[i][j + 1] != -1) {
+
+                        hole = board[i][j];
+                        jump_over = board[i][j + 1];
+                        selected_val = board[i][j + 2];
 
                         board[i][j + 2] = 0;
                         board[i][j + 1] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val3 * val2), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
+                        if (turn % 2 == 0)  arr.add(solution_1(board, turn + 1, score_p1 + (selected_val * jump_over), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
 
-                        board[i][j] = val1;
-                        board[i][j + 1] = val2;
-                        board[i][j + 2] = val3;
+
+                        board[i][j] = hole;
+                        board[i][j + 1] = jump_over;
+                        board[i][j + 2] = selected_val;
                         isGameEnded = false;
                     }
                     //DIAGONAL MOVES
-                    if (j + 2 < board[i].length && i - 2 >= 0 && board[i - 2][j + 2] != 0 && board[i - 2][j + 2] != -1 && board[i - 1][j + 1] != 0 && board[i - 1][j + 1] != -1) {
 
-                        val1 = board[i][j];
-                        val2 = board[i - 1][j + 1];
-                        val3 = board[i - 2][j + 2];
+//                    System.out.println("i : "+i+" "+"j : "+j);
+//                    System.out.println("length : "+board.length+" "+"length[i] : "+board[i].length);
+
+                    //System.out.println(j);
+
+                    if (j + 2 < board[i].length
+                        && i - 2 >= 0
+                        && board[i - 2][j + 2] != 0
+                        && board[i - 2][j + 2] != -1
+                        && board[i - 1][j + 1] != 0
+                        && board[i - 1][j + 1] != -1) {
+
+                        hole = board[i][j];
+                        jump_over = board[i - 1][j + 1];
+                        selected_val = board[i - 2][j + 2];
 
                         board[i - 2][j + 2] = 0;
                         board[i - 1][j + 1] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val3 * val2), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
 
-                        board[i][j] = val1;
-                        board[i - 1][j + 1] = val2;
-                        board[i - 2][j + 2] = val3;
+                        if (turn % 2 == 0)  arr.add(solution_1(board, turn + 1, score_p1 + (selected_val * jump_over), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
+
+
+                        board[i][j] = hole;
+                        board[i - 1][j + 1] = jump_over;
+                        board[i - 2][j + 2] = selected_val;
                         isGameEnded = false;
-
                     }
+                    if (j + 2 < board[i].length
+                        && i + 2 < board.length &&
+                        board[i + 2][j + 2] != 0 &&
+                        board[i + 2][j + 2] != -1 &&
+                        board[i + 1][j + 1] != 0 &&
+                        board[i + 1][j + 1] != -1) {
 
-                    if (j + 2 < board[i].length && i + 2 < board.length && board[i + 2][j + 2] != 0 && board[i + 2][j + 2] != -1 && board[i + 1][j + 1] != 0 && board[i + 1][j + 1] != -1) {
-                        val1 = board[i][j];
-                        val2 = board[i + 1][j + 1];
-                        val3 = board[i + 2][j + 2];
+                        hole = board[i][j];
+                        jump_over = board[i + 1][j + 1];
+                        selected_val = board[i + 2][j + 2];
 
                         board[i + 2][j + 2] = 0;
                         board[i + 1][j + 1] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val3 * val2), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
 
-                        board[i][j] = val1;
-                        board[i + 1][j + 1] = val2;
-                        board[i + 2][j + 2] = val3;
+                        if (turn % 2 == 0)  arr.add(solution_1(board, turn + 1, score_p1 + (selected_val * jump_over), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
+
+
+                        board[i][j] = hole;
+                        board[i + 1][j + 1] = jump_over;
+                        board[i + 2][j + 2] = selected_val;
                         isGameEnded = false;
                     }
-                    if (j - 2 >= 0 && i - 2 >= 0 && board[i - 2][j - 2] != 0 && board[i - 2][j - 2] != -1 && board[i - 1][j - 1] != 0 && board[i - 1][j - 1] != -1) {
-                        val1 = board[i][j];
-                        val2 = board[i - 1][j - 1];
-                        val3 = board[i - 2][j - 2];
+                    if (j - 2 >= 0 &&
+                        i - 2 >= 0 &&
+                        board[i - 2][j - 2] != 0 &&
+                        board[i - 2][j - 2] != -1 &&
+                        board[i - 1][j - 1] != 0 &&
+                        board[i - 1][j - 1] != -1) {
+
+                        hole = board[i][j];
+                        jump_over = board[i - 1][j - 1];
+                        selected_val = board[i - 2][j - 2];
 
                         board[i - 2][j - 2] = 0;
                         board[i - 1][j - 1] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val3 * val2), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
+                        if (turn % 2 == 0)  arr.add(solution_1(board, turn + 1, score_p1 + (selected_val * jump_over), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
 
-                        board[i][j] = val1;
-                        board[i - 1][j - 1] = val2;
-                        board[i - 2][j - 2] = val3;
+
+                        board[i][j] = hole;
+                        board[i - 1][j - 1] = jump_over;
+                        board[i - 2][j - 2] = selected_val;
                         isGameEnded = false;
                     }
-                    if (j - 2 >= 0 && i + 2 < board.length && board[i + 2][j - 2] != 0 && board[i + 2][j - 2] != -1 && board[i + 1][j - 1] != 0 && board[i + 1][j - 1] != -1) {
-                        val1 = board[i][j];
-                        val2 = board[i + 1][j - 1];
-                        val3 = board[i + 2][j - 2];
+                    if (j - 2 >= 0 &&
+                        i + 2 < board.length &&
+                        board[i + 2][j - 2] != 0 &&
+                        board[i + 2][j - 2] != -1 &&
+                        board[i + 1][j - 1] != 0 &&
+                        board[i + 1][j - 1] != -1) {
+
+                        hole = board[i][j];
+                        jump_over = board[i + 1][j - 1];
+                        selected_val = board[i + 2][j - 2];
 
                         board[i + 2][j - 2] = 0;
                         board[i + 1][j - 1] = 0;
-                        board[i][j] = val3;
+                        board[i][j] = selected_val;
 
-                        if (turn % 2 == 0)
-                            res = Math.max(res, solution_1(board, turn + 1, score_p1 + (val3 * val2), score_p2));
-                        else
-                            res = Math.min(res, solution_1(board, turn + 1, score_p1, score_p2 + (val3 * val2)));
+                        if (turn % 2 == 0)  arr.add(solution_1(board, turn + 1, score_p1 + (selected_val * jump_over), score_p2));
+                        else                arr.add(solution_1(board, turn + 1, score_p1, score_p2+ (jump_over * selected_val)));
 
-                        board[i][j] = val1;
-                        board[i + 1][j - 1] = val2;
-                        board[i + 2][j - 2] = val3;
+
+                        board[i][j] = hole;
+                        board[i + 1][j - 1] = jump_over;
+                        board[i + 2][j - 2] = selected_val;
                         isGameEnded = false;
                     }
                 }
             }
         }
         if (isGameEnded) {
-            arr.add(score_p1 - score_p2);
-            num++;
             return  score_p1 - score_p2;
         }
-        return res;
+        if (turn % 2 == 0) return Collections.max(arr);
+        return Collections.min(arr);
     }
 
     public static int solution_2(int[][] board) {
