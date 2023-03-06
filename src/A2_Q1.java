@@ -88,14 +88,7 @@ public class A2_Q1 {
     //DOES NOT WORK (maybe it does)
     public static int solution_1(int[][] board, int turn, int score_p1, int score_p2) {
         //printBoard(board);
-        ArrayList<Integer> arr = new ArrayList<>();
-
-        int res;
-        if (turn % 2 == 1) {
-            res = Integer.MAX_VALUE;
-        } else {
-            res = Integer.MIN_VALUE;
-        }
+        ArrayList<Integer> arr = new ArrayList<Integer>();
         boolean isGameEnded = true;
         for (int i = 0; i < board.length; i++) {
             for (int j = i; j >= 0; j--) {
@@ -302,7 +295,7 @@ public class A2_Q1 {
                 }
             }
         }
-        if (isGameEnded) {
+        if (arr.size() == 0) {
             return  score_p1 - score_p2;
         }
         if (turn % 2 == 0) return Collections.max(arr);
