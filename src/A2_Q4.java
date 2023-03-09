@@ -35,6 +35,7 @@ public class A2_Q4 {
             num++;
             right_pointer++;
         }
+
         while (left_pointer < mid) {
             аrr[num] = passengers[left_pointer];
             num++;
